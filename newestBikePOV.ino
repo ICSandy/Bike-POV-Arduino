@@ -90,7 +90,6 @@ boolean letterH[5][7] = {
      {0,0,0,0,0,0,0}
 };
 
-
 int led1 = 13;
 int led2 = 12;
 int led3 = 11;
@@ -105,9 +104,9 @@ unsigned long milliSeconds;
 unsigned long lastMilliCount = 0;
 unsigned long time = 0;
 
-float radiusWheel = 330.2; // in mm
+float radiusWheel = 330.2; // millimeters
 float circumfrence;
-float radiusLED = 159.15; //in mm 
+float radiusLED = 159.15; // millimeters
 float slices;
 
 float blinkRate = 0;
@@ -134,10 +133,7 @@ void setup() {
 }
 
 void loop() {
-  //Serial.println("top of loop");
   if (!(KPH <= 2)) { //blinkrates screw up under 2 kph (~1.2427mph) so we just ignore everything
-  //Serial.println("passed if");
-  Serial.println(slices/2);
     for (int i = 0; i < (slices/4); i++) {
       delayMicroseconds(blinkRate * 1000); //blinkrate needs to be converted from millis to mi
     }
@@ -148,7 +144,6 @@ void loop() {
       //waiting for magnet to pass
     }
     magnetPassed = false;
-    //Serial.println("done waiting for now");
   }
 }
 
@@ -161,22 +156,12 @@ int getMilliSeconds () {
 
 void updateCalculations() {
   magnetPassed = true;
-  //Serial.println("updating...");
-  
-  //Serial.print(RPS);
-  //Serial.print(" <---> ");
+
   calculateRPS(); // rps needs to happen first
-  //Serial.println(RPS);
-  
-  //Serial.print(blinkRate);
-  //Serial.print(" <---> ");
+
   calculateBlinkRate();
-  //Serial.println(blinkRate);
-  
-  //Serial.print(KPH);
-  //Serial.print(" <---> ");
+
   calculateKPH();
-  //Serial.println(KPH);
 }
 
 float calculateRPS() {
@@ -185,16 +170,9 @@ float calculateRPS() {
 
 void calculateBlinkRate() {
   blinkRate = 1000/(RPS*(slices));
-//  Serial.println("-----");
-//  Serial.println(rps);
-//  Serial.println(blinkRate);
-//  Serial.println("-----");
 }
 
 int calculateKPH() {
-  //Serial.println(circumfrence);
-//  int KPH = (circumfrence*rps*60*60)/1000000;
-//  Serial.println(KPH);
   KPH = (circumfrence*RPS*60*60)/1000000;
 }
 
@@ -202,24 +180,8 @@ void printLED (float blinkRate, int KPH) {
   String num = String(KPH);
   blinkRate = blinkRate * 1000; //from milliseconds to microseconds
   
-  //waiting until leds reach bottom of wheel
-//  int quarterOfWheel = slices / 4;
-//  int waitTime = quarterOfWheel * blinkRate;
-//  int x = time;
-//  int w = time - x;
-//  while (w < waitTime) {
-//    time = millis();
-//    w = time - x;
-//  }
-  
   for (int i = 0; i < 5; i++) {
     printCharacter(blinkRate, num.charAt(i));
-    
-//    for (int i = 0; i < 5; i++) {//inserting spaces
-//      digitalWrite(leds[i], LOW);
-//    }
-//    delay(blinkRate);
-    
   }
 
 
